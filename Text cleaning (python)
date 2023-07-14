@@ -33,7 +33,7 @@ def clean_text(text):
     'everyone', 'no one', 'something', 'anything', 'everything', 'nothing', 'somewhere', 'anywhere', 'everywhere', 'nowhere', 'something', 'nothing', 'somewhat', 'anything','everything', 'nothing', 
     'sometime', 'anytime', 'everytime', 'never', 'always','perhaps', 'maybe', 'possibly', 'certainly', 'probably', 'definitely', 'likely','unlikely', 'may', 'might', 'can', 'could', 'will', 'would', 
     'shall', 'should', 'must', 'ought', 'have to', 'has to', 'had to', 'need to', 'ought to', 'supposed to', 'dare', 'be able to', 'can', 'could', 'will', 'would', 'shall', 'should', 'may',
-    'might', 'must', 'have to', 'has to', 'had to', 'need to', 'ought to', 'supposed to', 'dare', 'be able to', 'can', 'could', 'will', 'would'
+    'might', 'must', 'have to', 'has to', 'had to', 'need to', 'ought to', 'supposed to', 'dare', 'be able to', 'can', 'could', 'will', 'would', 'its', 'too', 'cant', 'ever', 'didnt',' doesnt', 'wont'
     ])
 
     #tokenize the text
