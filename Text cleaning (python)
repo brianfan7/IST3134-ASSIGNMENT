@@ -1,0 +1,60 @@
+# import required modules
+import os
+import re
+import string
+
+# locate and read reviews.txt
+file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\reviews.txt'
+with open(file_path, 'r', encoding='utf-8') as file:
+    text = file.read()
+
+#perform cleaning operations to reviews.txt
+def clean_text(text):
+    #remove symbols
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    #remove numbers
+    text = re.sub(r'\d+', '', text)
+    #convert text to lowercase
+    text = text.lower()
+    #define a set of stop words
+    stop_words = set([
+        'the', 'a', 'an', 'is', 'and', 'or', 'not', 'to', 'in', 'on', 'of', 'for',
+        'it', 'that', 'this', 'with', 'as', 'by', 'at', 'from', 'you', 'your', 'but',
+        'they', 'we', 'my', 'me', 'i', 'he', 'she', 'him', 'her', 'his', 'hers', 'our',
+        'us', 'their', 'them', 'be', 'are', 'was', 'were', 'am', 'is', 'been', 'being',
+        'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall', 'should',
+        'can', 'could', 'may', 'might', 'must', 'if', 'when', 'where', 'how', 'what',
+        'which', 'who', 'whom', 'why', 'here', 'there', 'then', 'than', 'so', 'also',
+        'just', 'only', 'very', 'more', 'most', 'but', 'however', 'unless', 'until',
+        'while', 'although', 'though', 'because', 'since', 'if', 'unless', 'until',
+        # Add more stop words as needed
+    ])
+
+    #tokenize the text
+    tokens = text.split()
+    #remove stopwords
+    cleaned_tokens = [token for token in tokens if token not in stop_words]
+    #join cleaned tokens back into a string
+    cleaned_text = ' '.join(cleaned_tokens)
+
+    return cleaned_text
+
+#clean reviews.txt
+cleaned_text = clean_text(text)
+
+#output the cleaned data
+output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtext.txt'
+with open(output_file_path, 'w', encoding='utf-8') as file:
+    file.write(cleaned_text)
+
+print("Cleaned text has been written to the output file.")
+
+#scale the dataset by duplicating 6 times
+duplicated_text = cleaned_text * 6
+
+#write the duplicated text to the output file
+output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtestx6.txt'
+with open(output_file_path, 'w', encoding='utf-8') as file:
+    file.write(duplicated_text)
+
+print("Cleaned text has been written to the output file.")
