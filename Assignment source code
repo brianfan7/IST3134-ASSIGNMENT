@@ -1,0 +1,2 @@
+#Starts all Hadoop daemons, the namenode, datanodes, the jobtracker and tasktrackers.
+start-all.sh
