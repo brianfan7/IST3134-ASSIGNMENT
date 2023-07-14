@@ -1,14 +1,14 @@
-#steps after importing reviews.txt using WINSCP
+#steps after importing cleanedtext.txt using WINSCP
 #connect to hadoop user instance
 
 cd /home/ubuntu/
 
-#copy reviews.txt to HDFS
-hadoop fs -put reviews.txt reviews.txt #copy file to HDFS
+#copy cleanedtext to HDFS
+hadoop fs -put cleanedtext.txt cleanedtext.txt
 
 start-all.sh
-cp revews.txt ~/IST3134
-cd IST3134
+cp cleanedtext.txt ~/IST3134
+cd ~/IST3134
 
 #create mapper.py and add the following code
 nano mapper.py
@@ -59,13 +59,13 @@ if current_word == word:
 #Sort the word counts in descending order
 sorted_word_count = sorted(word_count_list, key=itemgetter(1), reverse=True)
 
-#output the top 50 most counted words
-for i in range(min(50, len(sorted_word_count))):
+#output the top 100 most counted words
+for i in range(min(100, len(sorted_word_count))):
     word, count = sorted_word_count[i]
     print(f"{word}\t{count}")
 "
 
 #launch mapreduce
-mapred streaming -files mapper.py,reducer.py -input reviews.txt -output oc -mapper "python3 mapper.py" -reducer "python 3 reducer.py"
+mapred streaming -files mapper.py,reducer.py -input cleanedtext.txt -output oc -mapper "python3 mapper.py" -reducer "python3 reducer.py"
 
 hadoop fs cat /user/hadoop/pc/part-00000
