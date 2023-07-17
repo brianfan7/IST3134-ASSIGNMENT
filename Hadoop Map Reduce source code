@@ -50,6 +50,28 @@ for i in range(min(100, len(sorted_word_count))):
     word, count = sorted_word_count[i]
     print(f"{word}\t{count}")
 "
+
+#Optimized Reducer
+"
+import sys
+from collections import defaultdict
+
+word_count = defaultdict(int)
+
+# Read input from standard input line by line
+for line in sys.stdin:
+    line = line.strip()
+    word, count = line.split('\t', 1)
+    count = int(count)
+
+    # Increment count for each word
+    word_count[word] += count
+
+# Output the top 100 most counted words
+for word, count in sorted(word_count.items(), key=lambda x: x[1], reverse=True)[:100]:
+    print(f"{word}\t{count}")
+"
+
 #set execution permisions
 $ chmod +x mapper.py
 $ chmod +x reducer.py
