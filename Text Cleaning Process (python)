@@ -42,11 +42,11 @@ print("Cleaned text has been written to the output file.")
 
 #scale the dataset by duplicating 6 times, duplicate from the next line
 duplicated_text = cleaned_text+'\n' 
-duplicated_text =  duplicated_text* 6
+duplicated_textt =  duplicated_text* 6
 
 #write the duplicated text to the output file
-output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtestx6.txt'
+output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtextx6.txt'
 with open(output_file_path, 'w', encoding='utf-8') as file:
-    file.write(duplicated_text)
+    file.write(duplicated_textt)
 
 print("Cleaned text has been written to the output file.")
