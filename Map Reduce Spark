@@ -5,13 +5,69 @@
 start-all.sh
 cd /home/ubuntu/
 
-#copy cleanedtext to HDFS and IST3134
-hadoop fs -put cleanedtext.txt cleanedtext.txt
-cp cleanedtext.txt ~/IST3134
+#copy ccleantext6x.txt to HDFS and IST3134
+hadoop fs -put cleantext6x.txt cleantext6x.txt
+cp cleantext6x.txt ~/IST3134
 
 cd ~/IST3134
 
+#Create python file
 nano sparkcount.py
+
+#Add folling to python
+"
+#Import the necessary libraries
+from pyspark.sql import SparkSession
+import nltk
+import re
+
+#Create a SparkSession
+spark = SparkSession.builder\
+  .master("local[*]")\
+  .appName("WordCount")\
+  .getOrCreate()
+
+#Obtain spark context
+sc=spark.sparkContext
+
+#Load and clean text data
+shakespeare_rdd = sc.textFile("cleanedtext.txt")
+shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'\t', '', x))
+shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'[^\w\s]', '', x))
+
+#Wor count calculation
+shakespeare_count = shakespeare_rdd.map(lambda word: (word, 1))
+shakespeare_wc = shakespeare_count.reduceByKey(lambda x , y : (x+y))
+
+#Sort and select top 100 count words
+shakespeare_wc_sort = shakespeare_wc.sortBy(lambda y:-y[1]).take(100)
+
+#Save file
+shakespeare_wc_sort.saveAsTextFile('/user/hadoop/spark_wc1')
+
+#Stop spark context
+sc.stop()
+"
+
+#Run the code with time function
+time python3 sparkcount.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import nltk
 import re
@@ -53,31 +109,3 @@ sparktext_wc = sparktext_count.reduceByKey(lambda x , y : (x+y))
 
 #Sort the values by Decending order and print the top 100 most used words in cleanedtext.txt
 sparktext_wc.sortBy(lambda y:-y[1]).take(100)
-
-
-
-
-
-
-"
-from pyspark.sql import SparkSession
-import nltk
-import re
-
-spark = SparkSession.builder\
-  .master("local[*]")\
-  .appName("WordCount")\
-  .getOrCreate()
-
-sc=spark.sparkContext
-
-shakespeare_rdd = sc.textFile("cleanedtext.txt")
-shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'\t', '', x))
-shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'[^\w\s]', '', x))
-
-shakespeare_count = shakespeare_rdd.map(lambda word: (word, 1))
-shakespeare_wc = shakespeare_count.reduceByKey(lambda x , y : (x+y))
-shakespeare_wc_sort = shakespeare_wc.sortBy(lambda y:-y[1]).take(100)
-shakespeare_wc_sort.saveAsTextFile('/user/hadoop/spark_wc1')
-sc.stop()
-"
