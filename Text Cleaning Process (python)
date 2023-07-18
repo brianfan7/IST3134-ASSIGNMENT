@@ -1,50 +1,50 @@
-# import required modules
+#Import required modules
 import os
 import re
 import string
 
-# locate and read reviews.txt
+#Locate and read reviews.txt
 file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\reviews.txt'
 with open(file_path, 'r', encoding='utf-8') as file:
     text = file.read()
 
-#perform cleaning operations to reviews.txt
+#Perform cleaning operations to reviews.txt
 def clean_text(text):
-    #remove symbols
+    #Remove symbols
     text = text.translate(str.maketrans('', '', string.punctuation))
     #remove numbers
     text = re.sub(r'\d+', '', text)
-    #convert text to lowercase
+    #Convert text to lowercase
     text = text.lower()
-    #define a set of stop words
+    #Define a set of stop words
     stop_words = set([
     'the', 'a', 'an', 'is', 'and', 'or', 'not', 'to', 'in', 'on', 'of', 'for','it', 'that', 'this', 'with', 'as', 'by', 'at', 'from', 'you', 'your', 'but', 'they', 'we', 'my', 'me', 'i', 'he', 'she', 'him', 'her', 'his', 'hers', 'our', 'us', 'their', 'them', 'be', 'are', 'was', 'were', 'am', 'is', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must', 'if', 'when', 'where', 'how', 'what', 'which', 'who', 'whom', 'why', 'here', 'there', 'then', 'than', 'so', 'also', 'just', 'only', 'very', 'more', 'most', 'but', 'however', 'unless', 'until', 'while', 'although', 'though', 'because', 'since', 'if', 'unless', 'until', 'some', 'any', 'all', 'every', 'much', 'many', 'few', 'most', 'such', 'no', 'own', 'other', 'another', 'somebody', 'anybody', 'everyone', 'somehow', 'already', 'always', 'never', 'often', 'sometimes', 'now', 'then', 'still', 'here', 'there', 'when', 'where', 'why', 'how', 'what', 'which', 'who', 'whom', 'whose', 'whether', 'while', 'because', 'since', 'so', 'before', 'after', 'during', 'under', 'above', 'below', 'over', 'across','through', 'onto', 'into', 'towards', 'against', 'among', 'between', 'within', 'without', 'beyond', 'upon', 'up', 'down', 'out', 'in', 'on', 'off', 'from', 'to', 'of', 'for', 'at', 'with', 'by', 'about', 'like', 'as', 'into', 'through', 'over', 'between', 'before', 'after', 'since', 'during', 'throughout', 'until', 'up', 'down', 'onto', 'upon', 'off', 'out', 'among', 'above', 'below', 'under', 'within', 'beneath', 'beyond', 'inside', 'outside', 'around', 'beside', 'besides', 'against', 'along', 'alongside', 'amid', 'amidst', 'whilst', 'whereas', 'whether', 'while', 'because', 'since', 'so', 'as', 'when', 'if', 'unless', 'until', 'unless', 'though', 'although', 'even', 'if', 'just', 'only', 'both', 'neither', 'either', 'nor', 'not', 'but', 'however', 'nevertheless','nonetheless', 'yet', 'still', 'now', 'then', 'next', 'meanwhile', 'finally', 'first', 'second', 'third', 'last', 'most', 'least', 'many', 'few', 'several', 'some', 'any', 'each', 'every', 'all', 'whole', 'part', 'none', 'somebody', 'anybody', 'everybody', 'nobody', 'something', 'anything', 'everything', 'nothing', 'somewhere', 'anywhere', 'everywhere', 'nowhere', 'anyone', 'someone','everyone', 'no one', 'something', 'anything', 'everything', 'nothing', 'somewhere', 'anywhere', 'everywhere', 'nowhere', 'something', 'nothing', 'somewhat', 'anything','everything', 'nothing', 'sometime', 'anytime', 'everytime', 'never', 'always','perhaps', 'maybe', 'possibly', 'certainly', 'probably', 'definitely', 'likely','unlikely', 'may', 'might', 'can', 'could', 'will', 'would', 'shall', 'should', 'must', 'ought', 'have to', 'has to', 'had to', 'need to', 'ought to', 'supposed to', 'dare', 'be able to', 'can', 'could', 'ill', 'would', 'shall', 'should', 'may', 'ive'. 'havent','might', 'must', 'have to', 'has to', 'had to', 'need to', 'ought to', 'supposed to', 'dare', 'be able to', 'can', 'could', 'will', 'would', 'its', 'too', 'cant', 'ever', 'didnt',' doesnt', 'wont','doesnt', 'dont'
     ])
 
-    #tokenize the text
+    #Tokenize the text
     tokens = text.split()
-    #remove stopwords
+    #Remove stopwords
     cleaned_tokens = [token for token in tokens if token not in stop_words]
-    #join cleaned tokens back into a string
+    #Join cleaned tokens back into a string
     cleaned_text = ' '.join(cleaned_tokens)
 
     return cleaned_text
 
-#clean reviews.txt
+#Clean reviews.txt
 cleaned_text = clean_text(text)
 
-#output the cleaned data
+#Output the cleaned data
 output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtext.txt'
 with open(output_file_path, 'w', encoding='utf-8') as file:
     file.write(cleaned_text)
 
 print("Cleaned text has been written to the output file.")
 
-#scale the dataset by duplicating 6 times, duplicate from the next line
+#Scale the dataset by duplicating 6 times, duplicate from the next line
 duplicated_text = cleaned_text+'\n' 
 duplicated_textt =  duplicated_text* 6
 
-#write the duplicated text to the output file
+#Write the duplicated text to the output file
 output_file_path = r'C:\Users\brian\OneDrive\Documents\IST Assignment\cleanedtextx6.txt'
 with open(output_file_path, 'w', encoding='utf-8') as file:
     file.write(duplicated_textt)
