@@ -31,19 +31,19 @@ spark = SparkSession.builder\
 sc=spark.sparkContext
 
 #Load and clean text data
-shakespeare_rdd = sc.textFile("cleanedtext.txt")
-shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'\t', '', x))
-shakespeare_rdd = shakespeare_rdd.map(lambda x: re.sub(r'[^\w\s]', '', x))
+textclean = sc.textFile("cleantext6x.txt")
+textclean = textclean.map(lambda x: re.sub(r'\t', '', x))
+textclean = textkclean.map(lambda x: re.sub(r'[^\w\s]', '', x))
 
-#Wor count calculation
-shakespeare_count = shakespeare_rdd.map(lambda word: (word, 1))
-shakespeare_wc = shakespeare_count.reduceByKey(lambda x , y : (x+y))
+#Word count calculation
+textcount = textclean.map(lambda word: (word, 1))
+textwc = textcount.reduceByKey(lambda x , y : (x+y))
 
 #Sort and select top 100 count words
-shakespeare_wc_sort = shakespeare_wc.sortBy(lambda y:-y[1]).take(100)
+textsort = textwc.sortBy(lambda y:-y[1]).take(100)
 
 #Save file
-shakespeare_wc_sort.saveAsTextFile('/user/hadoop/spark_wc1')
+textsort.saveAsTextFile('/user/hadoop/text_wc1')
 
 #Stop spark context
 sc.stop()
