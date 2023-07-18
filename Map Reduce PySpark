@@ -1,11 +1,11 @@
-#steps after importing cleanedtext.txt using WINSCP
+#Steps after importing cleanedtext.txt using WINSCP
 #connect to hadoop user instance
 
 #Start hadoop cluster
 start-all.sh
 cd /home/ubuntu/
 
-#copy ccleantext6x.txt to HDFS and IST3134
+#Copy cleantext6x.txt to HDFS and IST3134
 hadoop fs -put cleantext6x.txt cleantext6x.txt
 cp cleantext6x.txt ~/IST3134
 
@@ -55,61 +55,3 @@ sc.stop()
 
 #Run the code with time function
 time python3 sparkcount.py
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import nltk
-import re
-
-spark = SparkSession.builder\
-  .master("local[*]")\
-  .appName("WordCount")\
-  .getOrCreate()
-
-#start shell
-pyspark
-
-#initilize a SparkSession
-from pyspark.sql import SparkSession
-spark = SparkSession.builder\
-... .master("local[*]")\
-... .appName("WordCount")\
-... .getOrCreate()
-
-#Create sparkContext object
-sc=spark.sparkContext
-
-#Load cleanedtext.txt
-sparktext = sc.textFile("cleanedspark.txt")
-
-#Execute a count(optional)
-sparktext.count()
-
-#Use a lamda function and split the lines into individual words. Make a count.
-sparktext = sparktext.flatMap(lambda line: line.split(" "))
-
-#Remove white spaces/empty words
-sparktext = sparktext.filter(lambda x:x!='')
-
-#Word count, assign 1 to each word
-sparktext_count = sparktext.map(lambda word: (word, 1))
-#Reducer part
-sparktext_wc = sparktext_count.reduceByKey(lambda x , y : (x+y))
-
-#Sort the values by Decending order and print the top 100 most used words in cleanedtext.txt
-sparktext_wc.sortBy(lambda y:-y[1]).take(100)
