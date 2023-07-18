@@ -1,0 +1,37 @@
+cd IST3134
+
+#Start hadoop cluster
+#start shell
+hadoop@ip-172-31-82-68:~/IST3134$ pyspark
+
+#initilize a SparkSession
+from pyspark.sql import SparkSession
+spark = SparkSession.builder\
+... .master("local[*]")\
+... .appName("WordCount")\
+... .getOrCreate()
+
+#Create sparkContext object
+sc=spark.sparkContext
+#Load cleanedtext.txt
+shakespeare_rdd = sc.textFile("/shakespeare/comedies/")
+#Execute a count
+shakespeare_rdd.count()
+#Use a lamda function and split the lines into individual words. Make a count.
+shakespeare_rdd = shakespeare_rdd.flatMap(lambda line: line.split(" "))
+#Remove white spaces/empty words
+shakespeare_rdd = shakespeare_rdd.filter(lambda x:x!='')
+Now do the word count thing – assign 1 to each word
+shakespeare_count = shakespeare_rdd.map(lambda word: (word, 1))
+#Reducer part
+shakespeare_wc = shakespeare_count.reduceByKey(lambda x , y : (x+y))
+
+
+
+
+shakespeare_rdd.take(15)
+
+
+
+
+shakespeare_wc.sortBy(lambda y:-y[1]).take(15)
