@@ -25,6 +25,9 @@ import re
 spark = SparkSession.builder\
   .master("local[*]")\
   .appName("WordCount")\
+  #Increase the memory capicity
+  .config("spark.driver.memory", "4g") \
+  .config("spark.executor.memory", "4g") \
   .getOrCreate()
 
 #Obtain spark context
@@ -41,9 +44,10 @@ textwc = textcount.reduceByKey(lambda x , y : (x+y))
 
 #Sort and select top 100 count words
 textsort = textwc.sortBy(lambda y:-y[1]).take(100)
+rdd = spark.sparkContext.parallelize(textsort)
 
 #Save file
-textsort.saveAsTextFile('/user/hadoop/text_wc1')
+rdd.saveAsTextFile('/user/hadoop/testcompare')
 
 #Stop spark context
 sc.stop()
