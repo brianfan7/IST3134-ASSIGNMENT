@@ -1,8 +1,18 @@
-cd IST3134
+#steps after importing cleanedtext.txt using WINSCP
+#connect to hadoop user instance
 
 #Start hadoop cluster
+start-all.sh
+cd /home/ubuntu/
+
+#copy cleanedtext to HDFS and IST3134
+hadoop fs -put cleanedtext.txt cleanedtext.txt
+cp cleanedtext.txt ~/IST3134
+
+cd ~/IST3134
+
 #start shell
-hadoop@ip-172-31-82-68:~/IST3134$ pyspark
+pyspark
 
 #initilize a SparkSession
 from pyspark.sql import SparkSession
@@ -13,25 +23,23 @@ spark = SparkSession.builder\
 
 #Create sparkContext object
 sc=spark.sparkContext
+
 #Load cleanedtext.txt
-shakespeare_rdd = sc.textFile("/shakespeare/comedies/")
-#Execute a count
-shakespeare_rdd.count()
+sparktext = sc.textFile("cleanedspark.txt")
+
+#Execute a count(optional)
+sparktext.count()
+
 #Use a lamda function and split the lines into individual words. Make a count.
-shakespeare_rdd = shakespeare_rdd.flatMap(lambda line: line.split(" "))
+sparktext = sparktext.flatMap(lambda line: line.split(" "))
+
 #Remove white spaces/empty words
-shakespeare_rdd = shakespeare_rdd.filter(lambda x:x!='')
-Now do the word count thing – assign 1 to each word
-shakespeare_count = shakespeare_rdd.map(lambda word: (word, 1))
+sparktext = sparktext.filter(lambda x:x!='')
+
+#Word count, assign 1 to each word
+sparktext_count = sparktext.map(lambda word: (word, 1))
 #Reducer part
-shakespeare_wc = shakespeare_count.reduceByKey(lambda x , y : (x+y))
+sparktext_wc = sparktext_count.reduceByKey(lambda x , y : (x+y))
 
-
-
-
-shakespeare_rdd.take(15)
-
-
-
-
-shakespeare_wc.sortBy(lambda y:-y[1]).take(15)
+#Sort the values by Decending order and print the top 100 most used words in cleanedtext.txt
+sparktext_wc.sortBy(lambda y:-y[1]).take(100)
